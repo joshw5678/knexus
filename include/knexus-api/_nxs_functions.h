@@ -3,28 +3,28 @@
 
 /* clang-format off */
 
-#if defined(NEXUS_API_GENERATE_FUNC_DECL)
+#if defined(KNEXUS_API_GENERATE_FUNC_DECL)
 /************************************************************************
  * Generate the Function declarations
  ***********************************************************************/
 /* Generate the Function extern */
-#define NEXUS_API_FUNC(RETURN_TYPE, NAME, ...) \
+#define KNEXUS_API_FUNC(RETURN_TYPE, NAME, ...) \
     extern NXS_API_EXTERN_C NXS_API_ENTRY RETURN_TYPE NXS_API_CALL nxs##NAME(__VA_ARGS__);
 
 #else
-#if defined(NEXUS_API_GENERATE_FUNC_ENUM)
+#if defined(KNEXUS_API_GENERATE_FUNC_ENUM)
 /************************************************************************
  * Generate the Function Enum
  ***********************************************************************/
 /* Generate the Enum name */
-#define NEXUS_API_FUNC(RETURN_TYPE, NAME, ...) \
+#define KNEXUS_API_FUNC(RETURN_TYPE, NAME, ...) \
         NF_nxs##NAME,
     
 /* Declare the Enumeration */
 enum _nxs_function {
 
 #else
-#if defined(NEXUS_API_GENERATE_FUNC_TYPE)
+#if defined(KNEXUS_API_GENERATE_FUNC_TYPE)
 /************************************************************************
  * Generate the Function typedefs
  ***********************************************************************/
@@ -36,17 +36,17 @@ struct nxsFunctionType { typedef void *type; };
 
 
  /* Generate the Function typedefs */
-#define _NEXUS_API_FUNC(RETURN_TYPE, NAME, ...) \
+#define _KNEXUS_API_FUNC(RETURN_TYPE, NAME, ...) \
     typedef RETURN_TYPE NXS_API_CALL NXS_CONCAT(nxs##NAME, _t)(__VA_ARGS__); \
     typedef NXS_CONCAT(nxs##NAME, _t) * NXS_CONCAT(nxs##NAME, _fn);
 
 #ifdef __cplusplus
-#define NEXUS_API_FUNC(RETURN_TYPE, NAME, ...) \
-    _NEXUS_API_FUNC(RETURN_TYPE, NAME, __VA_ARGS__) \
+#define KNEXUS_API_FUNC(RETURN_TYPE, NAME, ...) \
+    _KNEXUS_API_FUNC(RETURN_TYPE, NAME, __VA_ARGS__) \
     template <> struct nxsFunctionType<NF_nxs##NAME> { typedef NXS_CONCAT(nxs##NAME, _fn) type; };
 #else
-#define NEXUS_API_FUNC(RETURN_TYPE, NAME, ...) \
-    _NEXUS_API_FUNC(RETURN_TYPE, NAME, __VA_ARGS__)
+#define KNEXUS_API_FUNC(RETURN_TYPE, NAME, ...) \
+    _KNEXUS_API_FUNC(RETURN_TYPE, NAME, __VA_ARGS__)
 #endif
 
 #endif
@@ -62,7 +62,7 @@ struct nxsFunctionType { typedef void *type; };
  * @def GetRuntimeProperty
  * @brief Return Runtime properties 
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, GetRuntimeProperty,
+KNEXUS_API_FUNC(nxs_status, GetRuntimeProperty,
     nxs_uint runtime_property_id,
     void *property_value,
     size_t* property_value_size
@@ -72,7 +72,7 @@ NEXUS_API_FUNC(nxs_status, GetRuntimeProperty,
  * @def GetDeviceProperty
  * @brief Return Device properties
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, GetDeviceProperty,
+KNEXUS_API_FUNC(nxs_status, GetDeviceProperty,
     nxs_int device_id,
     nxs_uint property_id,
     void *property_value,
@@ -85,7 +85,7 @@ NEXUS_API_FUNC(nxs_status, GetDeviceProperty,
   * @return Negative value is an error status.
   *         Non-negative is the bufferId.
 ***********************************************************************/
-NEXUS_API_FUNC(nxs_int, CreateBuffer,
+KNEXUS_API_FUNC(nxs_int, CreateBuffer,
     nxs_int device_id,
     nxs_buffer_layout shape,
     void* host_ptr,
@@ -95,7 +95,7 @@ NEXUS_API_FUNC(nxs_int, CreateBuffer,
  * @def GetBufferProperty
  * @brief Return Buffer properties 
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, GetBufferProperty,
+KNEXUS_API_FUNC(nxs_status, GetBufferProperty,
     nxs_int buffer_id,
     nxs_uint buffer_property_id,
     void *property_value,
@@ -106,7 +106,7 @@ NEXUS_API_FUNC(nxs_status, GetBufferProperty,
  * @brief Copy buffer to/from the host
  * @return Error status or Success.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, CopyBuffer,
+KNEXUS_API_FUNC(nxs_status, CopyBuffer,
     nxs_int buffer_id,
     void* host_ptr,
     nxs_uint buffer_settings
@@ -117,7 +117,7 @@ NEXUS_API_FUNC(nxs_status, CopyBuffer,
  * @brief Fill buffer on the device with a value
  * @return Error status or Success.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, FillBuffer,
+KNEXUS_API_FUNC(nxs_status, FillBuffer,
     nxs_int buffer_id,
     void *value,
     nxs_uint value_size_bytes
@@ -128,7 +128,7 @@ NEXUS_API_FUNC(nxs_status, FillBuffer,
  * @brief Release the buffer on the device
   * @return Error status or Succes.
 ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, ReleaseBuffer,
+KNEXUS_API_FUNC(nxs_status, ReleaseBuffer,
     nxs_int buffer_id
 )
 
@@ -139,7 +139,7 @@ NEXUS_API_FUNC(nxs_status, ReleaseBuffer,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_int, CreateLibrary,
+KNEXUS_API_FUNC(nxs_int, CreateLibrary,
     nxs_int device_id,
     void *library_data,
     nxs_uint data_size,
@@ -151,7 +151,7 @@ NEXUS_API_FUNC(nxs_int, CreateLibrary,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_int, CreateLibraryFromFile,
+KNEXUS_API_FUNC(nxs_int, CreateLibraryFromFile,
     nxs_int device_id,
     const char *library_data,
     nxs_uint library_settings
@@ -160,7 +160,7 @@ NEXUS_API_FUNC(nxs_int, CreateLibraryFromFile,
  * @def GetLibraryProperty
  * @brief Return Library properties 
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, GetLibraryProperty,
+KNEXUS_API_FUNC(nxs_status, GetLibraryProperty,
     nxs_int library_id,
     nxs_uint library_property_id,
     void *property_value,
@@ -171,7 +171,7 @@ NEXUS_API_FUNC(nxs_status, GetLibraryProperty,
  * @brief Release the buffer on the device
   * @return Error status or Succes.
 ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, ReleaseLibrary,
+KNEXUS_API_FUNC(nxs_status, ReleaseLibrary,
     nxs_int library_id
 )
 
@@ -181,7 +181,7 @@ NEXUS_API_FUNC(nxs_status, ReleaseLibrary,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_int, GetKernel,
+KNEXUS_API_FUNC(nxs_int, GetKernel,
     nxs_int library_id,
     const char *kernel_name
 )
@@ -189,7 +189,7 @@ NEXUS_API_FUNC(nxs_int, GetKernel,
  * @def GetKernelProperty
  * @brief Return Kernel properties 
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, GetKernelProperty,
+KNEXUS_API_FUNC(nxs_status, GetKernelProperty,
     nxs_int kernel_id,
     nxs_uint kernel_property_id,
     void *property_value,
@@ -202,7 +202,7 @@ NEXUS_API_FUNC(nxs_status, GetKernelProperty,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_int, CreateEvent,
+KNEXUS_API_FUNC(nxs_int, CreateEvent,
     nxs_int device_id,
     nxs_event_type event_type,
     nxs_uint event_settings
@@ -211,7 +211,7 @@ NEXUS_API_FUNC(nxs_int, CreateEvent,
  * @def GetEventProperty
  * @brief Return Event properties 
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, GetEventProperty,
+KNEXUS_API_FUNC(nxs_status, GetEventProperty,
     nxs_int event_id,
     nxs_uint event_property_id,
     void *property_value,
@@ -221,7 +221,7 @@ NEXUS_API_FUNC(nxs_status, GetEventProperty,
  * @def SignalEvent
  * @brief Signal the event on the device
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, SignalEvent,
+KNEXUS_API_FUNC(nxs_status, SignalEvent,
     nxs_int event_id,
     nxs_int value
 )
@@ -229,7 +229,7 @@ NEXUS_API_FUNC(nxs_status, SignalEvent,
  * @def WaitEvent
  * @brief Wait for the event on the device
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, WaitEvent,
+KNEXUS_API_FUNC(nxs_status, WaitEvent,
     nxs_int event_id,
     nxs_int value
 )
@@ -238,7 +238,7 @@ NEXUS_API_FUNC(nxs_status, WaitEvent,
  * @brief Release the event on the device
   * @return Error status or Succes.
 ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, ReleaseEvent,
+KNEXUS_API_FUNC(nxs_status, ReleaseEvent,
     nxs_int event_id
 )
 
@@ -248,7 +248,7 @@ NEXUS_API_FUNC(nxs_status, ReleaseEvent,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_int, CreateStream,
+KNEXUS_API_FUNC(nxs_int, CreateStream,
     nxs_int device_id,
     nxs_uint stream_settings
 )
@@ -256,7 +256,7 @@ NEXUS_API_FUNC(nxs_int, CreateStream,
  * @def GetStreamProperty
  * @brief Return Stream properties 
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, GetStreamProperty,
+KNEXUS_API_FUNC(nxs_status, GetStreamProperty,
     nxs_int stream_id,
     nxs_uint stream_property_id,
     void *property_value,
@@ -267,7 +267,7 @@ NEXUS_API_FUNC(nxs_status, GetStreamProperty,
  * @brief Release the buffer on the device
   * @return Error status or Succes.
 ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, ReleaseStream,
+KNEXUS_API_FUNC(nxs_status, ReleaseStream,
     nxs_int stream_id
 )
 
@@ -277,7 +277,7 @@ NEXUS_API_FUNC(nxs_status, ReleaseStream,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_int, CreateSchedule,
+KNEXUS_API_FUNC(nxs_int, CreateSchedule,
     nxs_int device_id,
     nxs_uint schedule_settings
 )
@@ -285,7 +285,7 @@ NEXUS_API_FUNC(nxs_int, CreateSchedule,
  * @def GetScheduleProperty
  * @brief Return Schedule properties 
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, GetScheduleProperty,
+KNEXUS_API_FUNC(nxs_status, GetScheduleProperty,
     nxs_int schedule_id,
     nxs_uint schedule_property_id,
     void *property_value,
@@ -296,7 +296,7 @@ NEXUS_API_FUNC(nxs_status, GetScheduleProperty,
  * @brief Release the buffer on the device
   * @return Error status or Succes.
 ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, RunSchedule,
+KNEXUS_API_FUNC(nxs_status, RunSchedule,
     nxs_int schedule_id,
     nxs_int stream_id,
     nxs_uint run_settings
@@ -306,7 +306,7 @@ NEXUS_API_FUNC(nxs_status, RunSchedule,
  * @brief Release the buffer on the device
   * @return Error status or Succes.
 ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, ReleaseSchedule,
+KNEXUS_API_FUNC(nxs_status, ReleaseSchedule,
     nxs_int schedule_id
 )
 
@@ -316,7 +316,7 @@ NEXUS_API_FUNC(nxs_status, ReleaseSchedule,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_int, CreateCommand,
+KNEXUS_API_FUNC(nxs_int, CreateCommand,
     nxs_int schedule_id,
     nxs_int kernel_id,
     nxs_uint command_settings
@@ -327,7 +327,7 @@ NEXUS_API_FUNC(nxs_int, CreateCommand,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_int, CreateSignalCommand,
+KNEXUS_API_FUNC(nxs_int, CreateSignalCommand,
     nxs_int schedule_id,
     nxs_int event_id,
     nxs_int signal_value,
@@ -339,7 +339,7 @@ NEXUS_API_FUNC(nxs_int, CreateSignalCommand,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_int, CreateWaitCommand,
+KNEXUS_API_FUNC(nxs_int, CreateWaitCommand,
     nxs_int schedule_id,
     nxs_int event_id,
     nxs_int wait_value,
@@ -349,7 +349,7 @@ NEXUS_API_FUNC(nxs_int, CreateWaitCommand,
  * @def GetCommandProperty
  * @brief Return Command properties 
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, GetCommandProperty,
+KNEXUS_API_FUNC(nxs_status, GetCommandProperty,
     nxs_int command_id,
     nxs_uint command_property_id,
     void *property_value,
@@ -361,7 +361,7 @@ NEXUS_API_FUNC(nxs_status, GetCommandProperty,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
- NEXUS_API_FUNC(nxs_status, SetCommandArgument,
+ KNEXUS_API_FUNC(nxs_status, SetCommandArgument,
     nxs_int command_id,
     nxs_int argument_index,
     nxs_int buffer_id,
@@ -374,7 +374,7 @@ NEXUS_API_FUNC(nxs_status, GetCommandProperty,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
- NEXUS_API_FUNC(nxs_status, SetCommandScalar,
+ KNEXUS_API_FUNC(nxs_status, SetCommandScalar,
     nxs_int command_id,
     nxs_int argument_index,
     void *value,
@@ -387,7 +387,7 @@ NEXUS_API_FUNC(nxs_status, GetCommandProperty,
  * @return Negative value is an error status.
  *         Non-negative is the bufferId.
  ***********************************************************************/
-NEXUS_API_FUNC(nxs_status, FinalizeCommand,
+KNEXUS_API_FUNC(nxs_status, FinalizeCommand,
     nxs_int command_id,
     nxs_dim3 grid_size,
     nxs_dim3 block_size,
@@ -395,7 +395,7 @@ NEXUS_API_FUNC(nxs_status, FinalizeCommand,
 )
 
 
-#ifdef NEXUS_API_GENERATE_FUNC_ENUM
+#ifdef KNEXUS_API_GENERATE_FUNC_ENUM
     NXS_FUNCTION_CNT,
     NXS_FUNCTION_PREFIX_LEN = 3,
     
@@ -411,8 +411,8 @@ nxs_function nxsGetFuncEnum(const char *funcName);
 
 /* clang-format on */
 
-#undef NEXUS_API_GENERATE_FUNC_DECL
-#undef NEXUS_API_GENERATE_FUNC_ENUM
-#undef NEXUS_API_GENERATE_FUNC_TYPE
+#undef KNEXUS_API_GENERATE_FUNC_DECL
+#undef KNEXUS_API_GENERATE_FUNC_ENUM
+#undef KNEXUS_API_GENERATE_FUNC_TYPE
 
-#undef NEXUS_API_FUNC
+#undef KNEXUS_API_FUNC

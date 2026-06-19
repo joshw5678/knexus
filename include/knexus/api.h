@@ -1,7 +1,7 @@
-#ifndef _NEXUS_API_H
-#define _NEXUS_API_H
+#ifndef _KNEXUS_API_H
+#define _KNEXUS_API_H
 
-namespace nexus {
+namespace knexus {
 
 enum NXS_Object_Type {
   NT_Buffer,
@@ -11,6 +11,6 @@ enum NXS_Object_Type {
 };
 
 typedef enum NXS_Object_Type nxs_type;
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // _NEXUS_API_H
+#endif  // _KNEXUS_API_H

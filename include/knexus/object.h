@@ -1,14 +1,14 @@
-#ifndef NEXUS_OBJECT_H
-#define NEXUS_OBJECT_H
+#ifndef KNEXUS_OBJECT_H
+#define KNEXUS_OBJECT_H
 
-#include <nexus-api.h>
-#include <nexus/property.h>
+#include <knexus-api.h>
+#include <knexus/property.h>
 
 #include <memory>
 #include <optional>
 #include <vector>
 
-namespace nexus {
+namespace knexus {
 
 namespace detail {
 
@@ -173,17 +173,17 @@ class Objects {
   typename ObjectVec::iterator end() const { return objects->end(); }
 };
 
-#define NEXUS_OBJ_MCALL(RET, FUNC, ...) \
+#define KNEXUS_OBJ_MCALL(RET, FUNC, ...) \
   if (auto obj = get()) { \
     return obj->FUNC(__VA_ARGS__); \
   } \
   return RET
 
-#define NEXUS_OBJ_MCALL_VOID(FUNC, ...) \
+#define KNEXUS_OBJ_MCALL_VOID(FUNC, ...) \
   if (auto obj = get()) { \
     obj->FUNC(__VA_ARGS__); \
   }
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_OBJECT_H
+#endif  // KNEXUS_OBJECT_H

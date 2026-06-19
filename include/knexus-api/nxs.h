@@ -1,11 +1,11 @@
 /*******************************************************************************
  ******************************************************************************/
 
-#ifndef __NEXUSAPI_NXS_H
-#define __NEXUSAPI_NXS_H
+#ifndef __KNEXUSAPI_NXS_H
+#define __KNEXUSAPI_NXS_H
 
-#include <nexus-api/nxs_platform.h>
-#include <nexus-api/nxs_version.h>
+#include <knexus-api/nxs_platform.h>
+#include <knexus-api/nxs_version.h>
 
 /* clang-format off */
 
@@ -290,4 +290,4 @@ enum _nxs_buffer_transfer {
 }
 #endif
 
-#endif  /* __NEXUSAPI_NXS_H */
+#endif  /* __KNEXUSAPI_NXS_H */

@@ -1,16 +1,16 @@
-#ifndef PYNEXUS_H
-#define PYNEXUS_H
+#ifndef PYKNEXUS_H
+#define PYKNEXUS_H
 
-#include <nexus-api.h>
+#include <knexus-api.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
 namespace py = pybind11;
 
-namespace pynexus {
+namespace pyknexus {
 
 void init_system_bindings(py::module &m);
 
-}  // namespace pynexus
+}  // namespace pyknexus
 
-#endif  // PYNEXUS_H
+#endif  // PYKNEXUS_H

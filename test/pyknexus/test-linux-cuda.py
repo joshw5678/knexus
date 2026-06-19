@@ -4,14 +4,14 @@ import sys
 
 
 import torch
-import nexus
+import knexus
 
 buf0 = torch.ones(1024)
 buf1 = torch.ones(1024)
 res2 = torch.zeros(1024)
 
 
-rt = nexus.get_runtime("cuda")
+rt = knexus.get_runtime("cuda")
 
 dev = rt.get_devices()[0]
 

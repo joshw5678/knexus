@@ -1,15 +1,15 @@
-#ifndef NEXUS_INFO_H
-#define NEXUS_INFO_H
+#ifndef KNEXUS_INFO_H
+#define KNEXUS_INFO_H
 
-#include <nexus-api.h>
-#include <nexus/object.h>
+#include <knexus-api.h>
+#include <knexus/object.h>
 
 #include <algorithm>
 #include <optional>
 #include <string>
 #include <vector>
 
-namespace nexus {
+namespace knexus {
 
 namespace detail {
 class InfoImpl;
@@ -48,6 +48,6 @@ class Info : public Object<detail::InfoImpl> {
 
 typedef Objects<Info> Infos;
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_INFO_H
+#endif  // KNEXUS_INFO_H

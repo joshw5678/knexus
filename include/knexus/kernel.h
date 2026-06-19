@@ -1,11 +1,11 @@
-#ifndef NEXUS_KERNEL_H
-#define NEXUS_KERNEL_H
+#ifndef KNEXUS_KERNEL_H
+#define KNEXUS_KERNEL_H
 
-#include <nexus-api.h>
-#include <nexus/object.h>
-#include <nexus/info.h>
+#include <knexus-api.h>
+#include <knexus/object.h>
+#include <knexus/info.h>
 
-namespace nexus {
+namespace knexus {
 
 namespace detail {
 class KernelImpl;
@@ -24,6 +24,6 @@ class Kernel : public Object<detail::KernelImpl> {
 
 typedef Objects<Kernel> Kernels;
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_KERNEL_H
+#endif  // KNEXUS_KERNEL_H

@@ -1,15 +1,15 @@
-#ifndef NEXUS_SYSTEM_H
-#define NEXUS_SYSTEM_H
+#ifndef KNEXUS_SYSTEM_H
+#define KNEXUS_SYSTEM_H
 
-#include <nexus/buffer.h>
-#include <nexus/info.h>
-#include <nexus/runtime.h>
+#include <knexus/buffer.h>
+#include <knexus/info.h>
+#include <knexus/runtime.h>
 
 #include <memory>
 #include <optional>
 #include <vector>
 
-namespace nexus {
+namespace knexus {
 namespace detail {
 class SystemImpl;
 }
@@ -35,6 +35,6 @@ class System : Object<detail::SystemImpl> {
 };
 
 extern System getSystem();
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_SYSTEM_H
+#endif  // KNEXUS_SYSTEM_H

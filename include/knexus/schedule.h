@@ -1,12 +1,12 @@
-#ifndef NEXUS_SCHEDULE_H
-#define NEXUS_SCHEDULE_H
+#ifndef KNEXUS_SCHEDULE_H
+#define KNEXUS_SCHEDULE_H
 
-#include <nexus-api.h>
-#include <nexus/command.h>
-#include <nexus/stream.h>
-#include <nexus/object.h>
+#include <knexus-api.h>
+#include <knexus/command.h>
+#include <knexus/stream.h>
+#include <knexus/object.h>
 
-namespace nexus {
+namespace knexus {
 
 namespace detail {
 class ScheduleImpl;
@@ -34,6 +34,6 @@ class Schedule : public Object<detail::ScheduleImpl> {
 
 typedef Objects<Schedule> Schedules;
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_SCHEDULE_H
+#endif  // KNEXUS_SCHEDULE_H

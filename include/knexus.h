@@ -1,16 +1,16 @@
-#ifndef NEXUS_H
-#define NEXUS_H
+#ifndef KNEXUS_H
+#define KNEXUS_H
 
-#include <nexus-api.h>
-#include <nexus/api.h>
-#include <nexus/buffer.h>
-#include <nexus/device.h>
-#include <nexus/device_db.h>
-#include <nexus/library.h>
-#include <nexus/info.h>
-#include <nexus/runtime.h>
-#include <nexus/schedule.h>
-#include <nexus/stream.h>
-#include <nexus/system.h>
+#include <knexus-api.h>
+#include <knexus/api.h>
+#include <knexus/buffer.h>
+#include <knexus/device.h>
+#include <knexus/device_db.h>
+#include <knexus/library.h>
+#include <knexus/info.h>
+#include <knexus/runtime.h>
+#include <knexus/schedule.h>
+#include <knexus/stream.h>
+#include <knexus/system.h>
 
-#endif  // NEXUS_H
+#endif  // KNEXUS_H

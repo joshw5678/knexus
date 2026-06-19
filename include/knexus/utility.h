@@ -1,5 +1,5 @@
-#ifndef NEXUS_UTILITY_H
-#define NEXUS_UTILITY_H
+#ifndef KNEXUS_UTILITY_H
+#define KNEXUS_UTILITY_H
 
 #include <cstdint>
 #include <functional>
@@ -7,7 +7,7 @@
 #include <string_view>
 #include <vector>
 
-namespace nexus {
+namespace knexus {
 
 typedef std::function<void(const std::string &, const std::string &)>
     PathNameFn;
@@ -17,6 +17,6 @@ void iterateEnvPaths(const char *envVar, const char *envDefault,
 std::vector<uint8_t> base64Decode(const std::string_view &encoded,
                                   size_t decoded_size);
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_SYSTEM_H
+#endif  // KNEXUS_SYSTEM_H

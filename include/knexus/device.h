@@ -1,18 +1,18 @@
-#ifndef NEXUS_DEVICE_H
-#define NEXUS_DEVICE_H
+#ifndef KNEXUS_DEVICE_H
+#define KNEXUS_DEVICE_H
 
-#include <nexus-api.h>
-#include <nexus/buffer.h>
-#include <nexus/event.h>
-#include <nexus/library.h>
-#include <nexus/info.h>
-#include <nexus/schedule.h>
-#include <nexus/stream.h>
+#include <knexus-api.h>
+#include <knexus/buffer.h>
+#include <knexus/event.h>
+#include <knexus/library.h>
+#include <knexus/info.h>
+#include <knexus/schedule.h>
+#include <knexus/stream.h>
 
 #include <optional>
 #include <string>
 
-namespace nexus {
+namespace knexus {
 
 namespace detail {
 class DeviceImpl;
@@ -55,6 +55,6 @@ class Device : public Object<detail::DeviceImpl> {
 
 typedef Objects<Device> Devices;
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_DEVICE_H
+#endif  // KNEXUS_DEVICE_H

@@ -1,10 +1,10 @@
-#ifndef NEXUS_STREAM_H
-#define NEXUS_STREAM_H
+#ifndef KNEXUS_STREAM_H
+#define KNEXUS_STREAM_H
 
-#include <nexus-api.h>
-#include <nexus/object.h>
+#include <knexus-api.h>
+#include <knexus/object.h>
 
-namespace nexus {
+namespace knexus {
 
 namespace detail {
 class StreamImpl;
@@ -22,6 +22,6 @@ class Stream : public Object<detail::StreamImpl> {
 
 typedef Objects<Stream> Streams;
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_STREAM_H
+#endif  // KNEXUS_STREAM_H

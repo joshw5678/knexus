@@ -1,21 +1,21 @@
 /*
  */
 
-#ifndef NEXUS_API_NXS_PROPERTYS_H_
-#define NEXUS_API_NXS_PROPERTYS_H_
+#ifndef KNEXUS_API_NXS_PROPERTYS_H_
+#define KNEXUS_API_NXS_PROPERTYS_H_
 
 #ifdef __cplusplus
 #include <string>
 #include <vector>
 #endif
 
-#include <nexus-api/nxs.h>
+#include <knexus-api/nxs.h>
 
-#define NEXUS_API_GENERATE_PROP_ENUM
-#include <nexus-api/_nxs_propertys.h>
-#define NEXUS_API_GENERATE_PROP_MAP
-#include <nexus-api/_nxs_propertys.h>
-#define NEXUS_API_GENERATE_PROP_TYPE
-#include <nexus-api/_nxs_propertys.h>
+#define KNEXUS_API_GENERATE_PROP_ENUM
+#include <knexus-api/_nxs_propertys.h>
+#define KNEXUS_API_GENERATE_PROP_MAP
+#include <knexus-api/_nxs_propertys.h>
+#define KNEXUS_API_GENERATE_PROP_TYPE
+#include <knexus-api/_nxs_propertys.h>
 
-#endif /* NEXUSAPI_NXS_PROPERTYS_H_ */
+#endif /* KNEXUSAPI_NXS_PROPERTYS_H_ */

@@ -1,31 +1,31 @@
-#ifndef NEXUS_LOG_H
-#define NEXUS_LOG_H
+#ifndef KNEXUS_LOG_H
+#define KNEXUS_LOG_H
 
-#include <nexus/log_manager.h>
+#include <knexus/log_manager.h>
 
-#ifndef NEXUS_LOG_MODULE
-#define NEXUS_LOG_MODULE "nexus"
+#ifndef KNEXUS_LOG_MODULE
+#define KNEXUS_LOG_MODULE "knexus"
 #endif
 
-#ifndef NEXUS_LOG_PADDING
-#define NEXUS_LOG_PADDING 10
+#ifndef KNEXUS_LOG_PADDING
+#define KNEXUS_LOG_PADDING 10
 #endif
 
-#ifndef NEXUS_LOG_MODULE_COLOR
-#define NEXUS_LOG_MODULE_COLOR ((const char*)0)
+#ifndef KNEXUS_LOG_MODULE_COLOR
+#define KNEXUS_LOG_MODULE_COLOR ((const char*)0)
 #endif
 
-// fmt + __VA_ARGS__ only — define NEXUS_LOG_MODULE per .cpp before the first #include of
-// this header (nexus-api pulls log_manager.h only, not these macros).
-// Optional: NEXUS_LOG_MODULE_COLOR = ANSI SGR prefix string (e.g. "\033[32m"), or 0 for defaults.
+// fmt + __VA_ARGS__ only — define KNEXUS_LOG_MODULE per .cpp before the first #include of
+// this header (knexus-api pulls log_manager.h only, not these macros).
+// Optional: KNEXUS_LOG_MODULE_COLOR = ANSI SGR prefix string (e.g. "\033[32m"), or 0 for defaults.
 // Log call is expanded here so the format string is a literal at the call site (no SPDLOG_FMT_RUNTIME).
 #define NXSLOG_MACRO(level, fmt, ...)                                                                \
   do {                                                                                               \
-    auto& _nxslog_inst = ::nexus::LogManager::getInstance();                                         \
+    auto& _nxslog_inst = ::knexus::LogManager::getInstance();                                         \
     if (_nxslog_inst.isOpen()) {                                                                     \
       _nxslog_inst.logger()->log((level), "{} | \x1b[40m\x1b[97m" fmt "\x1b[0m",                     \
-          ::nexus::LogManager::format_module_column(NEXUS_LOG_MODULE, NEXUS_LOG_PADDING,             \
-                                                     NEXUS_LOG_MODULE_COLOR),                        \
+          ::knexus::LogManager::format_module_column(KNEXUS_LOG_MODULE, KNEXUS_LOG_PADDING,             \
+                                                     KNEXUS_LOG_MODULE_COLOR),                        \
           ##__VA_ARGS__);                                                                            \
     }                                                                                                \
   } while (0)
@@ -73,4 +73,4 @@
 #define NXSLOG_CRITICAL(fmt, ...) (void)0
 #endif
 
-#endif  // NEXUS_LOG_H
+#endif  // KNEXUS_LOG_H

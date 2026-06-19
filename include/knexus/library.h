@@ -1,12 +1,12 @@
-#ifndef NEXUS_LIBRARY_H
-#define NEXUS_LIBRARY_H
+#ifndef KNEXUS_LIBRARY_H
+#define KNEXUS_LIBRARY_H
 
-#include <nexus-api.h>
-#include <nexus/kernel.h>
-#include <nexus/object.h>
-#include <nexus/info.h>
+#include <knexus-api.h>
+#include <knexus/kernel.h>
+#include <knexus/object.h>
+#include <knexus/info.h>
 
-namespace nexus {
+namespace knexus {
 
 namespace detail {
 class LibraryImpl;
@@ -30,6 +30,6 @@ class Library : public Object<detail::LibraryImpl> {
 
 typedef Objects<Library> Librarys;
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_LIBRARY_H
+#endif  // KNEXUS_LIBRARY_H

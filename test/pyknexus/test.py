@@ -1,13 +1,13 @@
 import numpy
 import torch
 
-import nexus
+import knexus
 
 buf0 = torch.ones(1024)
 buf1 = torch.ones(1024)
 res2 = torch.zeros(1024)
 
-rt = nexus.get_runtimes()[0]
+rt = knexus.get_runtimes()[0]
 
 dev = rt.get_devices()[0]
 

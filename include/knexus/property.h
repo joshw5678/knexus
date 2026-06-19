@@ -1,14 +1,14 @@
-#ifndef NEXUS_PROPERTY_H
-#define NEXUS_PROPERTY_H
+#ifndef KNEXUS_PROPERTY_H
+#define KNEXUS_PROPERTY_H
 
-#include <nexus-api.h>
+#include <knexus-api.h>
 
 #include <string>
 #include <variant>
 #include <vector>
 
-/// @brief  NOT USED, see json in Device or nexus-api
-namespace nexus {
+/// @brief  NOT USED, see json in Device or knexus-api
+namespace knexus {
 
 using PropIntVec = std::vector<nxs_long>;
 using PropFltVec = std::vector<nxs_double>;
@@ -36,6 +36,6 @@ class Property : public PropVariant {
   }
 };
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_PROPERTY_H
+#endif  // KNEXUS_PROPERTY_H

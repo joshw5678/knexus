@@ -1,62 +1,75 @@
-import numpy
+import pytest
 import torch
 
-import nexus
+import knexus
 
-buf0 = torch.ones(1024)
-buf1 = torch.ones(1024)
-res1 = torch.zeros(1024)
-res2 = torch.zeros(1024)
+from pathlib import Path
 
-for rt in nexus.get_runtimes():
-  if (rt.get_devices().size()):
-    dev = rt.get_devices()[0]
-    if (dev.get_property_str(nexus.property.Type) == "gpu"):
-      break
+def test_multi_stream_sync():
+    buf0 = torch.ones(1024)
+    buf1 = torch.ones(1024)
+    res1 = torch.zeros(1024)
+    res2 = torch.zeros(1024)
 
-nb0 = dev.create_buffer(buf0)
-nb1 = dev.create_buffer(buf1)
-nb2 = dev.create_buffer(res1)
-nb3 = dev.create_buffer(res2)
+    dev = None
 
-lib = dev.load_library_file("kernel.so")
-kern = lib.get_kernel('add_vectors')
+    for rt in knexus.get_runtimes():
+        if rt.get_devices().size():
+            candidate = rt.get_devices()[0]
+            if candidate.get_property_str(knexus.property.Type) == "gpu":
+                dev = candidate
+                break
 
-evf = dev.create_event()
+    if dev is None:
+        pytest.skip("No GPU device available")
 
-stream0 = dev.create_stream()
-stream1 = dev.create_stream()
+    nb0 = dev.create_buffer(buf0)
+    nb1 = dev.create_buffer(buf1)
+    nb2 = dev.create_buffer(res1)
+    nb3 = dev.create_buffer(res2)
 
-# schedule 0
-sched0 = dev.create_schedule()
+    kernel_path = Path(__file__).with_name("kernel.so")
+    assert kernel_path.exists(), f"Missing test kernel: {kernel_path}"
 
-cmd = sched0.create_command(kern)
-cmd.set_arg(0, nb0)
-cmd.set_arg(1, nb1)
-cmd.set_arg(2, nb2)
-cmd.finalize([32,1,1], [1024,1,1])
+    lib = dev.load_library(str(kernel_path))
+    kern = lib.get_kernel("add_vectors")
 
-ev0 = sched0.create_signal()
+    evf = dev.create_event()
 
-# schedule 1
-sched1 = dev.create_schedule()
+    stream0 = dev.create_stream()
+    stream1 = dev.create_stream()
 
-sched1.create_wait(ev0.get_event())
+    # schedule 0
+    sched0 = dev.create_schedule()
 
-cmd1 = sched1.create_command(kern)
-cmd1.set_arg(0, nb0)
-cmd1.set_arg(1, nb2)
-cmd1.set_arg(2, nb3)
-cmd1.finalize([32,1,1], [1024,1,1])
+    cmd = sched0.create_command(kern)
+    cmd.set_arg(0, nb0)
+    cmd.set_arg(1, nb1)
+    cmd.set_arg(2, nb2)
+    cmd.finalize([32, 1, 1], [1024, 1, 1])
 
-sched1.create_signal(evf)
+    ev0 = sched0.create_signal()
 
-# Run it
-sched1.run(stream1, False)
-sched0.run(stream0, False)
+    # schedule 1
+    sched1 = dev.create_schedule()
 
-evf.wait()
+    sched1.create_wait(ev0.get_event())
 
-nb3.copy(res2)
+    cmd1 = sched1.create_command(kern)
+    cmd1.set_arg(0, nb0)
+    cmd1.set_arg(1, nb2)
+    cmd1.set_arg(2, nb3)
+    cmd1.finalize([32, 1, 1], [1024, 1, 1])
 
-print(res2)
+    sched1.create_signal(evf)
+
+    # Run it
+    sched1.run(stream1, False)
+    sched0.run(stream0, False)
+
+    evf.wait()
+
+    nb3.copy(res2)
+
+    expected = torch.full((1024,), 3.0)
+    assert torch.allclose(res2, expected)

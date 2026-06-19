@@ -1,11 +1,11 @@
-#ifndef NEXUS_RUNTIME_H
-#define NEXUS_RUNTIME_H
+#ifndef KNEXUS_RUNTIME_H
+#define KNEXUS_RUNTIME_H
 
-#include <nexus/device.h>
+#include <knexus/device.h>
 
 #include <string>
 
-namespace nexus {
+namespace knexus {
 
 namespace detail {
 class RuntimeImpl;
@@ -26,6 +26,6 @@ class Runtime : public Object<detail::RuntimeImpl> {
 
 typedef Objects<Runtime> Runtimes;
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_RUNTIME_H
+#endif  // KNEXUS_RUNTIME_H

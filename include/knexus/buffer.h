@@ -1,12 +1,12 @@
-#ifndef NEXUS_BUFFER_H
-#define NEXUS_BUFFER_H
+#ifndef KNEXUS_BUFFER_H
+#define KNEXUS_BUFFER_H
 
-#include <nexus-api.h>
-#include <nexus/object.h>
+#include <knexus-api.h>
+#include <knexus/object.h>
 
 #include <vector>
 
-namespace nexus {
+namespace knexus {
 class Device;
 
 namespace detail {
@@ -89,6 +89,6 @@ class Buffer : public Object<detail::BufferImpl> {
 
 typedef Objects<Buffer> Buffers;
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_BUFFER_H
+#endif  // KNEXUS_BUFFER_H

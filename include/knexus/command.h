@@ -1,16 +1,16 @@
-#ifndef NEXUS_COMMAND_H
-#define NEXUS_COMMAND_H
+#ifndef KNEXUS_COMMAND_H
+#define KNEXUS_COMMAND_H
 
-#include <nexus-api.h>
-#include <nexus/buffer.h>
-#include <nexus/event.h>
-#include <nexus/kernel.h>
-#include <nexus/object.h>
+#include <knexus-api.h>
+#include <knexus/buffer.h>
+#include <knexus/event.h>
+#include <knexus/kernel.h>
+#include <knexus/object.h>
 
 #include <functional>
 #include <list>
 
-namespace nexus {
+namespace knexus {
 
 namespace detail {
 class CommandImpl;
@@ -36,6 +36,6 @@ class Command : public Object<detail::CommandImpl> {
 
 typedef Objects<Command> Commands;
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_COMMAND_H
+#endif  // KNEXUS_COMMAND_H

@@ -1,5 +1,5 @@
-#ifndef NEXUS_EVENT_H
-#define NEXUS_EVENT_H
+#ifndef KNEXUS_EVENT_H
+#define KNEXUS_EVENT_H
 
 ////////////////////////////////////////////////////////////
 // Event
@@ -10,10 +10,10 @@
 // - Event is used to synchronize the host and the device.
 ////////////////////////////////////////////////////////////
 
-#include <nexus-api.h>
-#include <nexus/object.h>
+#include <knexus-api.h>
+#include <knexus/object.h>
 
-namespace nexus {
+namespace knexus {
 
 namespace detail {
 class EventImpl;
@@ -32,6 +32,6 @@ class Event : public Object<detail::EventImpl> {
 
 typedef Objects<Event> Events;
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_EVENT_H
+#endif  // KNEXUS_EVENT_H

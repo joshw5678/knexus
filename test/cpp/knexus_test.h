@@ -1,5 +1,5 @@
-#ifndef NEXUS_TESTS_H
-#define NEXUS_TESTS_H
+#ifndef KNEXUS_TESTS_H
+#define KNEXUS_TESTS_H
 
 // Constants for test return values
 #define SUCCESS 0
@@ -23,4 +23,4 @@ int test_multi_stream_sync(int argc, char **argv);
 
 int test_smi(int argc, char **argv);
 
-#endif  // NEXUS_TESTS_H
+#endif  // KNEXUS_TESTS_H

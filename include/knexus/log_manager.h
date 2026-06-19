@@ -1,5 +1,5 @@
-#ifndef NEXUS_LOG_MANAGER_H
-#define NEXUS_LOG_MANAGER_H
+#ifndef KNEXUS_LOG_MANAGER_H
+#define KNEXUS_LOG_MANAGER_H
 
 #include <memory>
 #include <string>
@@ -12,16 +12,16 @@
 #endif
 #endif
 
-#ifndef NEXUS_LOG_NAME
-#define NEXUS_LOG_NAME "nexus"
+#ifndef KNEXUS_LOG_NAME
+#define KNEXUS_LOG_NAME "knexus"
 #endif
 
-// Nexus handles location via NEXUS_LOG_MODULE prefix only; avoid file:line in output.
+// Knexus handles location via KNEXUS_LOG_MODULE prefix only; avoid file:line in output.
 #define SPDLOG_NO_SOURCE_LOC
 #include <spdlog/spdlog.h>
 #include <spdlog/logger.h>
 
-namespace nexus {
+namespace knexus {
 
 class LogManager {
  public:
@@ -35,7 +35,7 @@ class LogManager {
   bool isOpen() const;
 
   static LogManager& getInstance() {
-    static LogManager instance(NEXUS_LOG_NAME);
+    static LogManager instance(KNEXUS_LOG_NAME);
     return instance;
   }
 
@@ -67,6 +67,6 @@ class LogManager {
   std::string log_name_;
 };
 
-}  // namespace nexus
+}  // namespace knexus
 
-#endif  // NEXUS_LOG_MANAGER_H
+#endif  // KNEXUS_LOG_MANAGER_H

@@ -5,13 +5,13 @@ __version__ = '0.2.1'
 # Note: import order is significant here.
 
 import os
-_NEXUS_PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
+_KNEXUS_PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-os.environ['NEXUS_HOME'] = _NEXUS_PACKAGE_DIR
-os.environ['NEXUS_RUNTIME_PATH'] = os.path.join(_NEXUS_PACKAGE_DIR, 'runtime_libs')
-os.environ['NEXUS_DEVICE_PATH'] = os.path.join(_NEXUS_PACKAGE_DIR, 'device_lib')
+os.environ['KNEXUS_HOME'] = _KNEXUS_PACKAGE_DIR
+os.environ['KNEXUS_RUNTIME_PATH'] = os.path.join(_KNEXUS_PACKAGE_DIR, 'runtime_libs')
+os.environ['KNEXUS_DEVICE_PATH'] = os.path.join(_KNEXUS_PACKAGE_DIR, 'device_lib')
 
-from ._C.libnexus import *
+from ._C.libknexus import *
 
 # Import utility functions
 from . import utils
