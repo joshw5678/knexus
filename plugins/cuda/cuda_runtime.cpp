@@ -4,11 +4,16 @@
 #include <cuda_command.h>
 #include <cuda_device.h>
 #include <cuda_plugin_runtime.h>
+#include <cuda_profiler_api.h>
 #include <cuda_runtime.h>
 #include <rt_buffer.h>
 #include <rt_object.h>
 #include <rt_utilities.h>
 #include <string.h>
+
+#include <atomic>
+
+#include <nvtx3/nvToolsExt.h>
 
 #include <nvml.h>
 
@@ -18,6 +23,63 @@ CudaRuntime *getRuntime() {
   static CudaRuntime s_runtime;
   return &s_runtime;
 }
+
+/************************************************************************
+ * @def Profiling support
+ * @brief Internal helpers backing NXS_ExecutionSettings_Profiling and
+ *        NXS_StreamSettings_Profiling. File-local, not part of the API.
+ ***********************************************************************/
+namespace {
+
+/*
+ * Streams carry settings that apply to everything scheduled on them, so the
+ * raw CUstream is wrapped rather than stored directly in the object table.
+ */
+struct CudaStream {
+  cudaStream_t stream;
+  nxs_uint settings;
+};
+
+/*
+ * Translate stream-level profiling into execution settings. The two enums do
+ * not share bit positions (stream is 1 << 1, execution is 1 << 0), so this
+ * cannot be a plain OR.
+ */
+nxs_uint getStreamExecutionSettings(const CudaStream *stm) {
+  if (stm && (stm->settings & NXS_StreamSettings_Profiling))
+    return NXS_ExecutionSettings_Profiling;
+  return 0;
+}
+
+/*
+ * Scopes an NVTX range for external profilers and gates capture so that
+ * `nsys profile --capture-range=cudaProfilerApi` collects only the annotated
+ * region. Concurrent and nested runs are reference counted so an inner scope
+ * cannot stop an outer one's collection. Costs nothing unless profiling is
+ * requested.
+ */
+class ProfileScope {
+  static std::atomic<int> depth;
+  bool active;
+
+ public:
+  ProfileScope(nxs_uint settings, const char *name)
+      : active(settings & NXS_ExecutionSettings_Profiling) {
+    if (!active) return;
+    if (depth.fetch_add(1) == 0) cudaProfilerStart();
+    nvtxRangePushA(name);
+  }
+
+  ~ProfileScope() {
+    if (!active) return;
+    nvtxRangePop();
+    if (depth.fetch_sub(1) == 1) cudaProfilerStop();
+  }
+};
+
+std::atomic<int> ProfileScope::depth{0};
+
+}  // namespace
 
 /*
  * Get the Runtime properties
@@ -578,10 +640,12 @@ extern "C" nxs_int NXS_API_CALL nxsCreateStream(nxs_int device_id,
   if (!device) return NXS_InvalidDevice;
 
   // TODO: Get the default command queue for the first Stream
-  NXSLOG_INFO("createStream");
+  NXSLOG_INFO("createStream {}", stream_settings);
   cudaStream_t stream;
   CUDA_CHECK(NXS_InvalidStream, cudaStreamCreate, &stream);
-  return rt->addObject(stream, false);
+
+  auto stm = new CudaStream{stream, stream_settings};
+  return rt->addObject(stm, true);
 }
 
 /************************************************************************
@@ -593,8 +657,8 @@ nxsGetStreamProperty(nxs_int stream_id, nxs_uint stream_property_id,
                      void *property_value, size_t *property_value_size) {
   NXSLOG_INFO("getStreamProperty {}", stream_property_id);
   auto rt = getRuntime();
-  auto stream = rt->getPtr<cudaStream_t>(stream_id);
-  if (!stream) return NXS_InvalidStream;
+  auto stm = rt->get<CudaStream>(stream_id);
+  if (!stm) return NXS_InvalidStream;
 
   switch (stream_property_id) {
     case NP_Keys: {
@@ -603,7 +667,7 @@ nxsGetStreamProperty(nxs_int stream_id, nxs_uint stream_property_id,
     }
     case NP_Value: {
       return rt::getPropertyInt(property_value, property_value_size,
-                                (nxs_long)stream);
+                                (nxs_long)stm->stream);
     }
   }
   return NXS_Success;
@@ -617,7 +681,12 @@ nxsGetStreamProperty(nxs_int stream_id, nxs_uint stream_property_id,
 extern "C" nxs_status NXS_API_CALL nxsReleaseStream(nxs_int stream_id) {
   NXSLOG_INFO("releaseStream {}", stream_id);
   auto rt = getRuntime();
-  if (!rt->dropObject(stream_id)) return NXS_InvalidStream;
+  auto stm = rt->get<CudaStream>(stream_id);
+  if (!stm) return NXS_InvalidStream;
+
+  CUDA_CHECK(NXS_InvalidStream, cudaStreamDestroy, stm->stream);
+  if (!rt->dropObject(stream_id, rt::delete_fn<CudaStream>))
+    return NXS_InvalidStream;
   return NXS_Success;
 }
 
@@ -694,7 +763,14 @@ extern "C" nxs_status NXS_API_CALL nxsRunSchedule(nxs_int schedule_id,
   auto schedule = rt->get<CudaSchedule>(schedule_id);
   if (!schedule) return NXS_InvalidSchedule;
 
-  auto stream = rt->getPtr<cudaStream_t>(stream_id);
+  auto stm = rt->get<CudaStream>(stream_id);
+  auto stream = stm ? stm->stream : nullptr;
+  run_settings |= getStreamExecutionSettings(stm);
+
+  char range[64];
+  snprintf(range, sizeof(range), "nxsRunSchedule(%d)", schedule_id);
+  ProfileScope profile(run_settings, range);
+
   auto status = schedule->run(stream, run_settings);
   if (!nxs_success(status)) return status;
 
