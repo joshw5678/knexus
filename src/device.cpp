@@ -136,7 +136,7 @@ Schedule detail::DeviceImpl::createSchedule(nxs_uint settings) {
 
 Stream detail::DeviceImpl::createStream(nxs_uint settings) {
   NXSLOG_TRACE("createStream {}", getId());
-  APICALL(nxsCreateStream, getId(), 0);
+  APICALL(nxsCreateStream, getId(), settings);
   Stream stream(detail::Impl(this, apiResult, settings));
   streams.add(stream);
   return stream;
