@@ -52,13 +52,28 @@ new one — `test/cpp/CMakeLists.txt` globs `*.cpp` automatically.)
 ## 3. Set the runtime/device search paths
 
 KNexus discovers plugins and device JSON relative to the current directory by
-default, so point it at the build output explicitly:
+default, so point it at the build output explicitly. Replace `/path/to/build`
+below with the absolute path to your actual `build` directory (e.g. `$(pwd)`
+if you're already there) — these are placeholders, not literal paths to copy:
 
 ```bash
 export KNEXUS_RUNTIME_PATH=/path/to/build/runtime_libs
 export KNEXUS_DEVICE_PATH=/path/to/build/device_lib
-export LD_LIBRARY_PATH=/path/to/build/lib:/path/to/build/runtime_libs:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/path/to/build:/path/to/build/src:/path/to/build/runtime_libs:$LD_LIBRARY_PATH
 ```
+
+For example, from a `build` directory at
+`/home/josh/knexus/knexus-profiler/build`:
+
+```bash
+export KNEXUS_RUNTIME_PATH=/home/josh/knexus/knexus-profiler/build/runtime_libs
+export KNEXUS_DEVICE_PATH=/home/josh/knexus/knexus-profiler/build/device_lib
+export LD_LIBRARY_PATH=/home/josh/knexus/knexus-profiler/build:/home/josh/knexus/knexus-profiler/build/src:/home/josh/knexus/knexus-profiler/build/runtime_libs:$LD_LIBRARY_PATH
+```
+
+Note `LD_LIBRARY_PATH` needs `build` and `build/src` themselves (where
+`libknexus.so`/`libknexus-api.so` are built), not `build/lib` — that
+directory only holds the bundled gtest/gmock libraries.
 
 ## 4. Run under `nsys`
 
@@ -120,6 +135,9 @@ point.
 
 **"No runtimes found"** — `KNEXUS_RUNTIME_PATH`/`KNEXUS_DEVICE_PATH` aren't
 set (or don't point at the build's `runtime_libs`/`device_lib`); see step 3.
+Double check you replaced the `/path/to/build` placeholders with your real
+build directory — exporting them verbatim is a common mistake and fails the
+same way (the loader just finds nothing at that literal path).
 
 **Only one kernel/range shows up in the trace even though the workload loops**
 — you used the default `--capture-range-end=stop` (or omitted the flag) with
